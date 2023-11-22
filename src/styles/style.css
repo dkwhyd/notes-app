@@ -1,0 +1,235 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.nav {
+  margin: 0 auto;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: white;
+  border-bottom: 0.1px solid black;
+  margin-bottom: 1rem;
+  height: 15vh;
+}
+.nav h1 {
+  margin: 0;
+  padding: 0;
+}
+.navbar {
+  display: flex;
+  padding: 0;
+  justify-content: space-evenly;
+}
+li {
+  display: inline;
+}
+a {
+  text-decoration: none;
+  padding: 1rem;
+}
+li a {
+  font-size: large;
+  color: black;
+  background-color: white;
+}
+li a.active{
+  border-bottom: 1px solid black;
+
+}
+
+h1,
+h2 {
+  text-align: center;
+}
+
+.form label,
+.searchContainer label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.searchContainer {
+  position: sticky;
+  top: 15vh;
+  background-color: white;
+  z-index: 10;
+}
+.searchContainer label {
+  max-width: 50vw;
+  margin: 0 auto;
+}
+
+.form {
+  max-width: 100%;
+  margin: auto;
+  padding: 1rem;
+}
+span {
+  font-size: 0.8rem;
+}
+.searchContainer,
+.notesContainer,
+.archivedContainer {
+  margin-bottom: 1rem;
+  min-height: 5rem;
+}
+
+input[type='text'],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 1px solid black;
+}
+
+input[type='submit'],
+input[type='button'] {
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+#search {
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.notesContainer,
+.archivedContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: left;
+}
+.card {
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.card-title {
+  font-size: 1.5em;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.card-title a {
+  padding: 0;
+  color: black;
+}
+.card-title a :visited{
+  border-bottom: 1px solid black;
+  color: red;
+}
+
+.card-date {
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.card-body {
+  margin-bottom: 16px;
+  min-height: 150px;
+}
+
+.card-button {
+  padding: 8px;
+  margin-right: 8px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.card-button .delete {
+  background-color: #ff6b6b;
+  color: #fff;
+}
+
+.card-button.custom {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.archived-note input[type='button'] {
+  background-color: #f44336;
+}
+
+.archived-note input[type='button']:hover {
+  background-color: #d32f2f;
+}
+.not-found{
+  text-align: center;
+}
+
+.not
+.data-not-found {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.detail{
+  margin: 0 auto;
+  max-width: 70vw;
+}
+
+.submit {
+  background-color: rgb(55, 55, 201);
+  width: 100%;
+  height: 3rem;
+}
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+.delete {
+  background-color: red;
+}
+.archive {
+  background-color: #4caf50;
+}
+@media (max-width: 768px) {
+  .searchContainer label {
+    max-width: 100%;
+    margin: 1rem;
+  }
+  .searchContainer {
+    top: 15vh;
+  }
+}
+
+@media (min-width: 768px) {
+  .searchContainer,
+  .notesContainer,
+  .archivedContainer {
+    margin-bottom: 0;
+  }
+
+
+  .form {
+    max-width: 50vw;
+  }
+  .card {
+    max-width: 40vw;
+  }
+}
+
+@media (min-width: 1000px) {
+  .card {
+    max-width: 20vw;
+  }
+}

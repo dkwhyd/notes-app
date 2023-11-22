@@ -1,0 +1,19 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.formatOnSave": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": false
+  },
+  "eslint.alwaysShowStatus": false,
+  "javascript.format.semicolons": "insert",
+  "eslint.validate": ["javascript"],
+  "prettier.useTabs": false,
+  "prettier.jsxSingleQuote": false,
+  "prettier.tabWidth": 2,
+  "prettier.arrowParens": "always",
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "all"
+}
