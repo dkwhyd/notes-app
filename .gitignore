@@ -11,6 +11,9 @@
 # production
 /build
 
+personal-notes.starter..zip
+submission-react-pemula.zip
+
 # misc
 .DS_Store
 .env.local
