@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../api/network-data';
 
 export default function Login() {
+  const accessToken = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
     email: '',
     password: '',
   });
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate('/');
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,8 +30,6 @@ export default function Login() {
     e.preventDefault();
 
     login({ ...userData }).then((response) => {
-      console.log(response);
-
       if (response.error === false) {
         alert('login successfull');
         dispatch({

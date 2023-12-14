@@ -1,18 +1,22 @@
 // import { getInitialData } from '../index';
 
-const initialState = localStorage.getItem('auth')
-  ? JSON.parse(localStorage.getItem('auth'))
-  : { token: null };
+const initialState = localStorage.getItem('accessToken')
+  ? JSON.parse(localStorage.getItem('accessToken'))
+  : null;
 
 function reducer(state = initialState, action) {
   switch (action.type) {
     case 'USER_LOGIN':
-      localStorage.setItem('auth', JSON.stringify(action.token));
-      return { token: action.token };
+      localStorage.setItem(
+        'accessToken',
+        JSON.stringify(action.token.accessToken),
+      );
+      return action.token.accessToken;
 
     case 'USER_LOGOUT':
-      return { token: null };
+      localStorage.setItem('accessToken', null);
 
+      return null;
     default:
       return state;
   }

@@ -1,75 +1,85 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 import { showFormattedDate } from '../utils';
-import Input from '../components/Input';
 import NotesCard from '../components/NotesCard';
 
 function Notes() {
-  const noteState = useSelector((state) => state.notes);
-  const dispatch = useDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [query, setQuery] = useState('');
+  const accessToken = useSelector((state) => state.auth);
+  const [reload, setReload] = useState(false);
+  const [notes, setNotes] = useState();
 
   useEffect(() => {
-    const search = searchParams.get('search');
-    if (search) {
-      setQuery(search);
+    const fetchData = async () => {
+      const response = await axios.get(
+        'https://notes-api.dicoding.dev/v1/notes',
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken} `,
+          },
+        },
+      );
+      // console.log(response.data);
+      if (response.data.status === 'success') {
+        setNotes(response.data.data);
+      }
+    };
+
+    fetchData();
+  }, [reload]);
+
+  const deleteNotes = async (id) => {
+    try {
+      const result = await axios.delete(
+        `https://notes-api.dicoding.dev/v1/notes/${id}`,
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      );
+      if (result.data.status === 'success') {
+        setReload(!reload);
+      }
+    } catch (err) {
+      console.log(err);
     }
-  }, []);
-
-  const filteredNotes = noteState.filter(
-    (note) => note.title.toLowerCase().includes(query.toLowerCase())
-      || note.body.toLowerCase().includes(query.toLowerCase()),
-  );
-
-  useEffect(() => {
-    setSearchParams({
-      search: query,
-    });
-  }, [query]);
-
+  };
+  const archiveNotes = async (noteId) => {
+    try {
+      const result = await axios.post(
+        `https://notes-api.dicoding.dev/v1/notes/${noteId}/archive`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      console.log(result);
+      setReload(!reload);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  console.log(notes);
   return (
     <div>
       <div>
         <h2>Catatan Aktif</h2>
-        <div className="searchContainer">
-          <Input
-            label="Find Notes"
-            type="text"
-            value={query}
-            placeholder="type title or notes"
-            handleChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
+
         <div className="notesContainer">
-          {filteredNotes.filter((note) => !note.archived).length === 0 ? (
-            <div className="data-not-found">
-              <p>Tidak ada catatan</p>
-            </div>
-          ) : (
-            filteredNotes
-            && filteredNotes
-              .filter((note) => !note.archived)
-              .map((note) => (
-                <NotesCard
-                  id={note.id}
-                  key={note.id}
-                  date={showFormattedDate(note.createdAt)}
-                  title={note.title}
-                  body={note.body}
-                  deleteHandler={() => dispatch({
-                    type: 'REMOVE_NOTE',
-                    id: note.id,
-                  })}
-                  otherNameHandler="Archived"
-                  otherHandler={() => dispatch({
-                    type: 'ARCHIVE_NOTE',
-                    id: note.id,
-                  })}
-                />
-              ))
-          )}
+          {notes
+            && notes.map((note) => (
+              <NotesCard
+                id={note.id}
+                key={note.id}
+                date={showFormattedDate(note.createdAt)}
+                title={note.title}
+                body={note.body}
+                deleteHandler={() => deleteNotes(note.id)}
+                otherNameHandler="Archived"
+                otherHandler={() => archiveNotes(note.id)}
+              />
+            ))}
+          {notes ? <p>tidak ada catatan </p> : null}
         </div>
       </div>
     </div>
