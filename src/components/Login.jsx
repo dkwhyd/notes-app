@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../api/network-data';
+import SwitchTheme from './SwitchTheme';
 
 export default function Login() {
   const accessToken = useSelector((state) => state.auth);
@@ -45,7 +46,7 @@ export default function Login() {
     <div>
       <div className="Login">
         <h2>Login</h2>
-
+        <SwitchTheme />
         <form onSubmit={handleSubmit} className="register-form">
           <label htmlFor="email">
             Email:

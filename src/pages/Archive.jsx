@@ -58,7 +58,6 @@ export default function Archive() {
     }
   };
 
-  console.log(notes);
   return (
     <div>
       <h2>Archived</h2>
@@ -82,7 +81,7 @@ export default function Archive() {
             />
           ))
         )}
-        {notes ? <p>tidak ada catatan </p> : null}
+        {notes && notes.length <= 0 ? <p>tidak ada catatan </p> : null}
       </div>
     </div>
   );

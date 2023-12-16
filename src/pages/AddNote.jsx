@@ -1,17 +1,13 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-// import { addNote } from '../api/network-data';
+import { useSelector } from 'react-redux';
+
 import Button from '../components/Button';
 import Input from '../components/Input';
 import InputBody from '../components/InputBody';
-import InputCheckbox from '../components/InputCheckbox';
 
 export default function AddNote() {
   const accessToken = useSelector((state) => state.auth);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [error, setError] = useState({
     title: '',
     body: '',
@@ -46,7 +42,6 @@ export default function AddNote() {
   };
 
   const handleSubmit = async (e) => {
-    // const createdAt = new Date().toISOString();
     e.preventDefault();
     if (form.title.length < 1) {
       setError({ ...error, title: 'Title is empty' });
@@ -59,15 +54,6 @@ export default function AddNote() {
       });
     } else {
       setError({ ...error, title: '', body: '' });
-      // dispatch({
-      //   type: 'ADD_NOTE',
-      //   title: form.title,
-      //   body: form.body,
-      //   archived: form.archived,
-      //   createdAt,
-      // });
-      // addNote(form.title, form.body);
-
       try {
         const response = await axios.post(
           'https://notes-api.dicoding.dev/v1/notes',
@@ -85,14 +71,12 @@ export default function AddNote() {
       } catch (err) {
         console.log(err);
       }
-      // clear form
       setForm({
         title: '',
         body: '',
         archived: false,
         createdAt: '',
       });
-      // navigate('/');
     }
   };
 

@@ -59,13 +59,13 @@ function Notes() {
       console.log(err);
     }
   };
-  console.log(notes);
   return (
     <div>
       <div>
         <h2>Catatan Aktif</h2>
 
         <div className="notesContainer">
+          {notes === undefined ? 'loading' : null}
           {notes
             && notes.map((note) => (
               <NotesCard
@@ -79,7 +79,7 @@ function Notes() {
                 otherHandler={() => archiveNotes(note.id)}
               />
             ))}
-          {notes ? <p>tidak ada catatan </p> : null}
+          {notes && notes.length === 0 ? 'tidak ada catatan' : null}
         </div>
       </div>
     </div>

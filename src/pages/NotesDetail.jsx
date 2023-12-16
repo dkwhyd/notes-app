@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { showFormattedDate } from '../utils';
 import NotFound from '../components/NotFound';
 import Button from '../components/Button';
@@ -11,10 +11,10 @@ import NotesTitle from '../components/NotesTitle';
 
 export default function NotesDetail() {
   const { id } = useParams();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const accessToken = useSelector((state) => state.auth);
   const [data, setData] = useState();
+  const [reload, setReload] = useState(false);
 
   // console.log(id);
   useEffect(() => {
@@ -36,22 +36,54 @@ export default function NotesDetail() {
       }
     };
     fetchData();
-  }, []);
+  }, [reload]);
 
   const deleteNotes = async (idNotes) => {
     try {
-      await axios.delete(
-        `https://notes-api.dicoding.dev/v1/notes/${idNotes}`,
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-      );
-      // if (result.data.status === 'success') {
-      //   setReload(!reload);
-      // }
+      await axios.delete(`https://notes-api.dicoding.dev/v1/notes/${idNotes}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
     } catch (err) {
       console.log(err);
     }
   };
-
+  const unarchiveNote = async (noteId) => {
+    try {
+      const result = await axios.post(
+        `https://notes-api.dicoding.dev/v1/notes/${noteId}/unarchive`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken} `,
+          },
+        },
+      );
+      if (result.data.status === 'success') {
+        setReload(!reload);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const archiveNotes = async (noteId) => {
+    try {
+      const result = await axios.post(
+        `https://notes-api.dicoding.dev/v1/notes/${noteId}/archive`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      if (result.data.status === 'success') {
+        setReload(!reload);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div>
       {data && data ? (
@@ -72,10 +104,11 @@ export default function NotesDetail() {
             type="submit"
             value={data.archived ? 'Unarchived' : 'Archived'}
             onClick={() => {
-              dispatch({
-                type: `${data.archived ? 'UNARCHIVED_NOTE' : 'ARCHIVE_NOTE'}`,
-                id: data.id,
-              });
+              if (data.archived) {
+                unarchiveNote(data.id);
+              } else {
+                archiveNotes(data.id);
+              }
             }}
             styleName="archive"
           />
