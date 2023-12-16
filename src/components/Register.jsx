@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { register } from '../api/network-data';
+import SwitchTheme from './SwitchTheme';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -20,23 +21,20 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Proses registrasi dapat ditambahkan di sini
 
     register({ ...userData }).then((response) => {
       if (response.error === false) {
-        alert('register successfull');
         navigate('/login');
       }
       console.log(response);
     });
-    // console.log('Data yang di-submit:', userData);
   };
 
   return (
     <div>
       <div className="Register">
         <h2>Register</h2>
-
+        <SwitchTheme />
         <form onSubmit={handleSubmit} className="register-form">
           <label htmlFor="name">
             Name:

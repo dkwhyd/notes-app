@@ -1,14 +1,13 @@
+import axios from 'axios';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import Button from '../components/Button';
 import Input from '../components/Input';
 import InputBody from '../components/InputBody';
-import InputCheckbox from '../components/InputCheckbox';
 
 export default function AddNote() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const accessToken = useSelector((state) => state.auth);
   const [error, setError] = useState({
     title: '',
     body: '',
@@ -42,8 +41,7 @@ export default function AddNote() {
     }
   };
 
-  const handleSubmit = (e) => {
-    const createdAt = new Date().toISOString();
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.title.length < 1) {
       setError({ ...error, title: 'Title is empty' });
@@ -56,21 +54,29 @@ export default function AddNote() {
       });
     } else {
       setError({ ...error, title: '', body: '' });
-      dispatch({
-        type: 'ADD_NOTE',
-        title: form.title,
-        body: form.body,
-        archived: form.archived,
-        createdAt,
-      });
-      // clear form
+      try {
+        const response = await axios.post(
+          'https://notes-api.dicoding.dev/v1/notes',
+          {
+            title: form.title,
+            body: form.body,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          },
+        );
+        console.log(response);
+      } catch (err) {
+        console.log(err);
+      }
       setForm({
         title: '',
         body: '',
         archived: false,
         createdAt: '',
       });
-      navigate('/');
     }
   };
 
@@ -92,10 +98,10 @@ export default function AddNote() {
         />
         {error.body && <div className="error">{error.body}</div>}
 
-        <InputCheckbox
+        {/* <InputCheckbox
           value={form.archived}
           onChange={(e) => setForm({ ...form, archived: e.target.checked })}
-        />
+        /> */}
 
         <Button
           value="Add Note"
